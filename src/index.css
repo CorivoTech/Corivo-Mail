@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --corivo-navy: #14243A;
+    --corivo-blue: #2563EB;
+    --corivo-blue-hover: #1D4ED8;
+    --corivo-blue-soft: #3B82F6;
+    --corivo-bg: #F7F9FC;
+    --corivo-surface: #FFFFFF;
+    --corivo-surface-secondary: #F1F5F9;
+    --corivo-text: #172033;
+    --corivo-text-secondary: #64748B;
+    --corivo-text-muted: #94A3B8;
+    --corivo-border: #E2E8F0;
+    --corivo-success: #16A34A;
+    --corivo-warning: #D97706;
+    --corivo-danger: #DC2626;
+  }
+
+  .dark {
+    --corivo-bg: #0B1220;
+    --corivo-surface: #111A2E;
+    --corivo-surface-secondary: #18233A;
+    --corivo-text: #F1F5F9;
+    --corivo-text-secondary: #94A3B8;
+    --corivo-text-muted: #64748B;
+    --corivo-border: #1E293B;
+  }
+
+  body {
+    font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: var(--corivo-bg);
+    color: var(--corivo-text);
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  code, pre, .font-mono, .tabular-nums {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Custom thin scrollbars for dense webmail panes */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.45);
+}

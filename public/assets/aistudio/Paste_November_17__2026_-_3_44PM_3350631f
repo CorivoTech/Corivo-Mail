@@ -1,0 +1,2441 @@
+# MASTER BUILD PROMPT — CORIVO MAIL
+## Complete Business Email SaaS Platform
+### Company: Corivo Tech
+### Technology: Next.js + TypeScript
+
+Act as a Principal Software Architect, Senior Full-Stack Engineer, SaaS Product Designer, Database Architect, Security Engineer and QA Lead.
+
+You are responsible for building a complete, professional, production-oriented business email SaaS platform called **CORIVO MAIL**.
+
+Do not create a static UI prototype, landing page-only application, dashboard-only application or collection of disconnected screens.
+
+Build a cohesive, functional, responsive web application with complete navigation, user authentication, role-based permissions, reusable components, persistent data, working forms, API integrations, error handling, and a scalable architecture.
+
+Every visible button, form, navigation item, table action, dropdown, modal, search field and interactive component must perform its intended action or clearly indicate that the functionality is planned or unavailable.
+
+Do not use fake functionality that suggests an operation succeeded when it did not.
+
+---
+
+# 1. PRODUCT OVERVIEW
+
+## Product Name
+Corivo Mail
+
+## Company
+Corivo Tech
+
+## Product Category
+Business Email and Domain Management SaaS.
+
+## Product Positioning
+Professional Business Email, Simplified.
+
+## Vision
+
+Corivo Mail enables businesses, startups, schools and growing organisations to create and manage professional domain-based email accounts.
+
+Example email addresses:
+
+- admin@company.com
+- support@company.com
+- finance@company.com
+- hr@company.com
+- employee@company.com
+
+The platform should offer:
+
+1. Professional business email.
+2. Webmail application.
+3. Organisation management.
+4. Domain onboarding.
+5. DNS configuration and verification.
+6. Mailbox and employee management.
+7. Spam and security controls.
+8. Email deliverability monitoring.
+9. Account settings and profile management.
+10. Future contacts, calendar and collaboration features.
+
+The product should compete in the same general product category as Zoho Mail, Google Workspace and Microsoft Outlook.
+
+Do not copy their interfaces. Create an original Corivo identity.
+
+## Target customers
+
+- Small businesses.
+- Medium-sized businesses.
+- Startups.
+- Schools and educational institutions.
+- Growing companies.
+- Organisations that want professional domain-based email.
+
+## Target markets
+
+India initially, with architecture that supports international customers.
+
+Use INR for illustrative billing, Asia/Kolkata as the default timezone, and internationalisation-ready architecture.
+
+---
+
+# 2. TECHNOLOGY STACK — STRICT REQUIREMENTS
+
+Use the following stack.
+
+## Frontend
+
+- Next.js with App Router.
+- TypeScript with strict type checking.
+- React.
+- Tailwind CSS.
+- shadcn/ui for reusable UI components.
+- Lucide React for icons.
+- React Hook Form for forms.
+- Zod for validation.
+- TanStack Query where useful for server-state management.
+- Recharts for dashboards and analytics.
+
+## Backend
+
+Use Next.js server-side functionality and route handlers for application APIs.
+
+- TypeScript.
+- Next.js Server Actions where appropriate.
+- Next.js Route Handlers.
+- Service and repository architecture.
+- Centralised error handling.
+- Server-side input validation.
+
+Do not place sensitive business logic or secrets in client-side components.
+
+## Database
+
+- PostgreSQL.
+- Prisma ORM.
+- Proper migrations.
+- Seed data for development.
+- Foreign keys and indexes.
+- Transaction handling where required.
+
+## Authentication
+
+Use a secure, production-appropriate authentication architecture.
+
+Requirements:
+- Email and password login.
+- Secure password hashing using Argon2id.
+- Secure session management.
+- HTTP-only secure cookies.
+- Password reset.
+- Session expiration.
+- Logout.
+- Account suspension.
+- Role-based access control.
+- Organisation-level permissions.
+- Future OAuth2/OIDC and TOTP 2FA support.
+
+Never store plaintext passwords.
+
+## Infrastructure integrations
+
+Design integration adapters for:
+
+- Postfix: SMTP transport.
+- Dovecot: IMAP and mailbox access.
+- Rspamd: Spam filtering and DKIM signing.
+- ClamAV: Antivirus scanning.
+- Redis: Cache and queues.
+- S3-compatible storage: Attachments and backups.
+- OpenSearch or Meilisearch: Email search.
+
+Use environment variables for credentials and service endpoints.
+
+Do not assume these external services are installed or accessible.
+
+## Architecture principles
+
+- Modular architecture.
+- Multi-tenant by design.
+- Reusable UI components.
+- Separation of business logic and presentation.
+- Typed API contracts.
+- Centralised permissions.
+- Secure database access.
+- Maintainable code.
+- Scalable service boundaries.
+- Production-grade logging and error handling.
+
+---
+
+# 3. CRITICAL DEVELOPMENT RULES
+
+Follow these rules throughout development.
+
+1. Build the application, not just its visual representation.
+2. Implement all major navigation routes.
+3. Every form must have validation.
+4. Every important operation must have loading, success and failure states.
+5. Persist application data in PostgreSQL when the database is configured.
+6. Use development seed data when real infrastructure is unavailable.
+7. Clearly distinguish simulated features from real integrations.
+8. Never fabricate DNS verification, email delivery, spam scanning or payment success.
+9. Never expose API keys, passwords, tokens or private DKIM keys in frontend code.
+10. Never allow one organisation to access another organisation's data.
+11. All administrative operations must enforce server-side permissions.
+12. Use reusable components rather than duplicating entire screens.
+13. Preserve existing project configuration and working code when modifying an existing project.
+14. Do not replace Next.js with another framework.
+15. Do not use JavaScript where TypeScript can be used.
+16. Do not leave buttons without working actions.
+17. Do not create dead navigation links.
+18. Do not use Lorem Ipsum.
+19. Do not stop after building the dashboard.
+20. Complete the application incrementally and verify each module.
+
+If a feature requires external infrastructure that is unavailable, implement its integration interface and a clearly labelled development mode.
+
+---
+
+# 4. BRAND IDENTITY AND DESIGN SYSTEM
+
+Create a premium, modern, enterprise-grade SaaS design.
+
+## Brand
+
+CORIVO MAIL
+
+Tagline:
+
+Professional Business Email, Simplified.
+
+Create an original logo using an envelope-inspired symbol and a subtle digital connectivity concept.
+
+## Colour palette
+
+Primary Navy: #14243A
+
+Primary Blue: #2563EB
+
+Secondary Blue: #3B82F6
+
+Background: #F7F9FC
+
+Surface: #FFFFFF
+
+Secondary Surface: #F1F5F9
+
+Primary Text: #172033
+
+Secondary Text: #64748B
+
+Muted Text: #94A3B8
+
+Success: #16A34A
+
+Warning: #D97706
+
+Danger: #DC2626
+
+Information: #2563EB
+
+## Typography
+
+Use Inter.
+
+## Visual style
+
+- Light-first interface.
+- Professional enterprise SaaS.
+- Clean spacing.
+- 8px spacing system.
+- Subtle borders.
+- 8–12px border radius.
+- Minimal shadows.
+- Clear visual hierarchy.
+- Professional tables.
+- Consistent icons.
+- Accessible contrast.
+- Responsive layouts.
+- Smooth but restrained transitions.
+
+Avoid:
+- Excessive gradients.
+- Neon colours.
+- Unnecessary glassmorphism.
+- Excessive animation.
+- Oversized dashboard cards.
+- Cluttered sidebars.
+- Unnecessary decorative elements.
+
+The interface must feel like a mature business product.
+
+---
+
+# 5. APPLICATION ARCHITECTURE AND USER ROLES
+
+Create two connected application environments.
+
+## A. Corivo Mail Workspace
+
+For normal mailbox users.
+
+Features:
+- Inbox.
+- Sent.
+- Drafts.
+- Starred.
+- Snoozed.
+- Spam.
+- Trash.
+- Custom folders.
+- Search.
+- Compose.
+- User profile.
+- Personal settings.
+
+## B. Corivo Mail Admin Console
+
+For organisation owners and authorised administrators.
+
+Features:
+- Overview dashboard.
+- Domain management.
+- DNS verification.
+- Mailbox management.
+- User management.
+- Security.
+- Email deliverability.
+- Usage and storage.
+- Organisation settings.
+- Roles and permissions.
+- Administrative activity.
+
+## User roles
+
+Implement the following roles:
+
+### 1. Platform Super Admin
+
+Corivo's internal platform operator.
+
+Can:
+- View platform-level organisation records.
+- Manage organisation accounts.
+- Suspend or reactivate organisations.
+- View platform health.
+- Manage platform-level settings.
+- View permitted operational metadata.
+- Investigate infrastructure alerts.
+
+Super Admin must not automatically have unrestricted access to customer email content. Any exceptional access must be separately authorised and audited.
+
+### 2. Organisation Owner
+
+Can:
+- Manage organisation profile.
+- Add and manage domains.
+- Create and manage mailboxes.
+- Assign administrator roles.
+- Configure mailbox quotas.
+- View organisation usage.
+- Manage security settings.
+- View domain health.
+
+### 3. Organisation Admin
+
+Can:
+- Manage permitted users.
+- Create mailboxes.
+- Manage assigned domains.
+- View usage.
+- Handle account administration.
+
+Cannot modify owner-level settings unless explicitly granted permission.
+
+### 4. Mailbox User
+
+Can:
+- Access their own mailbox.
+- Send and receive emails.
+- Manage personal folders.
+- Manage their profile.
+- Configure personal email preferences.
+- Manage their own sessions and password.
+
+Cannot access organisation administration.
+
+Enforce role permissions on the server, not just by hiding menu items.
+
+---
+
+# 6. COMPLETE ROUTING STRUCTURE
+
+Create a proper Next.js App Router structure.
+
+Suggested routes:
+
+## Public
+
+/
+ /features
+ /security
+ /pricing
+ /support
+ /login
+ /forgot-password
+ /reset-password
+ /signup
+
+## Onboarding
+
+/onboarding/organisation
+/onboarding/domain
+/onboarding/domain-verification
+/onboarding/dns-setup
+/onboarding/mailbox
+/onboarding/complete
+
+## User Workspace
+
+/app/mail
+/app/mail/inbox
+/app/mail/sent
+/app/mail/drafts
+/app/mail/starred
+/app/mail/snoozed
+/app/mail/spam
+/app/mail/trash
+/app/mail/folders/[folderId]
+/app/mail/[messageId]
+/app/search
+/app/contacts
+/app/calendar
+
+## User Account and Settings
+
+/app/account
+/app/account/profile
+/app/account/personal-information
+/app/account/security
+/app/account/password
+/app/account/sessions
+/app/settings
+/app/settings/general
+/app/settings/email
+/app/settings/signature
+/app/settings/notifications
+/app/settings/display
+/app/settings/storage
+
+## Admin Console
+
+/admin
+/admin/overview
+/admin/domains
+/admin/domains/add
+/admin/domains/[domainId]
+/admin/domains/[domainId]/dns
+/admin/mailboxes
+/admin/mailboxes/create
+/admin/mailboxes/[mailboxId]
+/admin/users
+/admin/users/[userId]
+/admin/roles
+/admin/security
+/admin/security/activity
+/admin/deliverability
+/admin/deliverability/queues
+/admin/usage
+/admin/storage
+/admin/organisation
+/admin/organisation/profile
+/admin/organisation/preferences
+/admin/organisation/security
+/admin/organisation/notifications
+/admin/audit-logs
+/admin/billing
+/admin/subscription
+
+## Platform Administration
+
+/platform
+/platform/organisations
+/platform/organisations/[organisationId]
+/platform/users
+/platform/health
+/platform/settings
+/platform/audit-logs
+
+## Future Modules
+
+/app/contacts
+/app/calendar
+/app/tasks
+/app/notes
+/app/shared-mailboxes
+/app/migration
+
+Ensure route protection, role checks and redirects.
+
+---
+
+# 7. PUBLIC WEBSITE AND AUTHENTICATION
+
+Build the following screens.
+
+## Screen 1 — Homepage
+
+Header:
+- Logo.
+- Product.
+- Features.
+- Security.
+- Pricing.
+- Support.
+- Sign In.
+- Get Started.
+
+Hero:
+
+"Business Email. Built Around Your Domain."
+
+Description:
+
+"Give your organisation professional email with domain control, secure communication and simple mailbox management."
+
+CTA:
+- Get Started.
+- Explore Features.
+
+Display a realistic product dashboard preview.
+
+Add sections:
+- Professional business email.
+- Domain management.
+- Security.
+- Spam protection.
+- Organisation administration.
+- Why Corivo Mail.
+- Pricing.
+- FAQ.
+- Footer.
+
+Use illustrative pricing only, never claim unapproved prices are actual commercial plans.
+
+## Screen 2 — Login
+
+Fields:
+- Business email.
+- Password.
+- Show/hide password.
+- Remember me.
+- Forgot password.
+
+Actions:
+- Sign in.
+- Show validation errors.
+- Handle incorrect credentials.
+- Handle suspended account.
+- Redirect users based on permissions.
+
+## Screen 3 — Signup
+
+Fields:
+- Full name.
+- Business email.
+- Password.
+- Confirm password.
+- Organisation name.
+- Country.
+- Accept terms.
+
+Create the account and organisation through a secure server-side operation.
+
+## Screen 4 — Forgot Password
+
+- Email input.
+- Send reset link.
+- Success confirmation.
+- Safe generic responses that do not reveal whether an account exists.
+
+## Screen 5 — Reset Password
+
+- New password.
+- Confirm password.
+- Strength indicator.
+- Password requirements.
+- Token verification.
+- Expired token state.
+
+---
+
+# 8. ORGANISATION ONBOARDING
+
+Create a guided onboarding process with a progress indicator.
+
+## Screen 6 — Organisation Setup
+
+Fields:
+- Organisation name.
+- Business category.
+- Country.
+- Organisation size.
+- Owner name.
+- Primary contact.
+
+## Screen 7 — Add Domain
+
+Allow the organisation owner to enter a domain.
+
+Example:
+company.com
+
+Validate the domain format.
+
+Explain that the user must own or control DNS for the domain.
+
+## Screen 8 — Domain Ownership Verification
+
+Display:
+- Domain.
+- Verification method.
+- TXT record type.
+- Host.
+- Value.
+- TTL.
+- Copy button.
+- Verify button.
+
+States:
+- Pending.
+- Checking.
+- Verified.
+- Failed.
+
+Use actual DNS verification only through a configured server-side DNS checker.
+
+In development mode, use clearly marked simulated results.
+
+## Screen 9 — DNS Configuration
+
+Show cards for:
+
+MX:
+Receives incoming mail.
+
+SPF:
+Identifies authorised sending servers.
+
+DKIM:
+Authenticates outgoing email using cryptographic signatures.
+
+DMARC:
+Defines how receiving servers should handle messages that fail authentication checks.
+
+For every record show:
+- Type.
+- Host.
+- Value.
+- Priority where relevant.
+- TTL.
+- Copy.
+- Verification status.
+- Last checked.
+
+Do not generate fake live DNS results.
+
+## Screen 10 — Domain Health Summary
+
+Show:
+- Ownership verification.
+- MX.
+- SPF.
+- DKIM.
+- DMARC.
+- TLS status where available.
+- Overall domain health.
+
+Explain failures in plain language.
+
+## Screen 11 — Create First Mailbox
+
+Fields:
+- First name.
+- Last name.
+- Username.
+- Domain.
+- Password or secure invitation workflow.
+- Mailbox quota.
+- Role.
+
+Preview:
+admin@company.com
+
+Allow multiple mailbox creation.
+
+## Screen 12 — Setup Complete
+
+Show:
+- Organisation.
+- Domain.
+- Mailboxes.
+- Setup checklist.
+- Next actions.
+
+Buttons:
+- Open Mail.
+- Open Admin Console.
+
+---
+
+# 9. COMPLETE USER EMAIL WORKSPACE
+
+Create a premium webmail interface.
+
+## Main layout
+
+Desktop:
+
+Three-column layout:
+
+1. Navigation sidebar.
+2. Email list.
+3. Email reading pane.
+
+Top navigation:
+- Corivo Mail logo.
+- Global search.
+- Help.
+- Notifications.
+- Profile menu.
+
+Sidebar:
+
+- Compose.
+- Inbox.
+- Starred.
+- Snoozed.
+- Sent.
+- Drafts.
+- Spam.
+- Trash.
+- Custom folders.
+- Contacts (V1).
+- Calendar (V1).
+
+Show unread counts.
+
+## Screen 13 — Inbox
+
+Implement:
+- Email list.
+- Sender.
+- Subject.
+- Preview.
+- Date.
+- Star.
+- Attachment indicator.
+- Read/unread state.
+
+Actions:
+- Select.
+- Archive.
+- Delete.
+- Mark unread.
+- Star.
+- Move.
+- Refresh.
+
+Add search, filtering, sorting and pagination or incremental loading.
+
+Use realistic sample emails.
+
+## Screen 14 — Email Reading
+
+Show:
+- Sender.
+- Sender address.
+- Recipient.
+- CC.
+- Date.
+- Subject.
+- Message body.
+- Attachments.
+
+Actions:
+- Reply.
+- Reply all.
+- Forward.
+- Archive.
+- Delete.
+- Star.
+- Print.
+- Mark unread.
+
+## Screen 15 — Compose Email
+
+Support:
+- To.
+- CC.
+- BCC.
+- Subject.
+- Rich-text editor.
+- Formatting.
+- Lists.
+- Links.
+- Attachments.
+- Signature.
+- Send.
+- Save draft.
+- Discard.
+
+Attachment limit:
+25 MB per attachment.
+
+Validate file types and file size according to server policy.
+
+Support attachment upload progress.
+
+## Screen 16 — Reply and Forward
+
+Create inline and full-window reply experiences.
+
+Preserve original message context and recipient information.
+
+## Screen 17 — Drafts
+
+Display:
+- Recipient.
+- Subject.
+- Last updated.
+- Attachments.
+
+Actions:
+- Edit.
+- Delete.
+- Continue composing.
+
+## Screen 18 — Sent
+
+Display sent emails with recipient, subject, date and attachment details.
+
+## Screen 19 — Starred
+
+Display important emails.
+
+## Screen 20 — Snoozed
+
+Display messages with their scheduled return time.
+
+Implement snooze and unsnooze only when the scheduling backend is available; otherwise provide an explicitly simulated development mode.
+
+## Screen 21 — Spam
+
+Display spam messages.
+
+Actions:
+- Mark as not spam.
+- Delete permanently.
+- View details.
+
+## Screen 22 — Trash
+
+Actions:
+- Restore.
+- Delete permanently.
+- Empty trash.
+
+Use confirmation dialogs.
+
+## Screen 23 — Custom Folders
+
+Allow:
+- Create.
+- Rename.
+- Delete.
+- Move emails.
+- Organise folders.
+
+## Screen 24 — Advanced Search
+
+Search across:
+- Sender.
+- Recipient.
+- Subject.
+- Body.
+- Date.
+- Attachments.
+- Folder.
+
+Support:
+- Search filters.
+- Search results.
+- Highlighted terms.
+- Empty state.
+- Loading state.
+
+Connect to the actual search service when available.
+
+## Screen 25 — Email Details and Attachments
+
+Show attachment previews where supported.
+
+Allow secure downloads through authorised server-side access.
+
+Do not expose direct public links to private attachments.
+
+---
+
+# 10. USER PROFILE — MUST BE FULLY IMPLEMENTED
+
+This section is essential. Do not omit it.
+
+Create a dedicated user account area accessible from the avatar menu.
+
+## Screen 26 — Profile Overview
+
+Display:
+- Profile picture.
+- Full name.
+- Business email.
+- Organisation name.
+- Job title.
+- Department.
+- Account role.
+- Account creation date.
+
+Actions:
+- Edit Profile.
+- Change Password.
+- Manage Sessions.
+- Manage Preferences.
+
+## Screen 27 — Personal Information
+
+Editable fields:
+- First name.
+- Last name.
+- Display name.
+- Job title.
+- Department.
+- Phone number.
+- Profile photo.
+
+Email address should be read-only unless a verified change-email workflow is implemented.
+
+Actions:
+- Save Changes.
+- Cancel.
+
+Validate all inputs.
+
+## Screen 28 — Account Security
+
+Display:
+- Password status.
+- Last password update.
+- Active sessions.
+- Recent sign-in activity.
+- Two-factor authentication status.
+
+Actions:
+- Change Password.
+- Sign out other sessions.
+- Enable 2FA (V1).
+- Manage trusted devices (V1).
+
+Clearly label unavailable functionality.
+
+## Screen 29 — Change Password
+
+Fields:
+- Current password.
+- New password.
+- Confirm password.
+
+Requirements:
+- Secure server-side verification.
+- Password strength rules.
+- Confirmation.
+- Session invalidation policy.
+
+## Screen 30 — Active Sessions
+
+Show:
+- Device.
+- Browser.
+- Location if reliably available.
+- IP address.
+- Last active.
+- Current session indicator.
+
+Allow:
+- Sign out individual session.
+- Sign out all other sessions.
+
+Never invent device or location information.
+
+## Screen 31 — Personal Preferences
+
+Allow:
+- Language.
+- Time zone.
+- Date format.
+- Time format.
+- Theme.
+- Display density.
+
+Default:
+Asia/Kolkata.
+
+## Screen 32 — User Notifications
+
+Configure:
+- New email notifications.
+- Browser notifications.
+- Security alerts.
+- Product announcements.
+
+## Screen 33 — User Storage
+
+Show:
+- Allocated quota.
+- Used storage.
+- Available storage.
+- Usage percentage.
+
+Display understandable usage information.
+
+---
+
+# 11. USER SETTINGS — COMPLETE SETTINGS CENTRE
+
+Create a dedicated settings layout with its own navigation.
+
+Do not place all settings on one oversized page.
+
+## Screen 34 — Settings Overview
+
+Show grouped settings:
+
+General:
+- Language.
+- Time zone.
+- Date and time.
+- Theme.
+- Display density.
+
+Mail:
+- Default reply behaviour.
+- Conversation threading.
+- Reading preferences.
+- Default font.
+- Signature.
+- Sending preferences.
+
+Notifications:
+- Browser notifications.
+- New email notifications.
+- Security alerts.
+
+Account:
+- Profile.
+- Password.
+- Sessions.
+- Security.
+
+Storage:
+- Quota.
+- Usage.
+
+## Screen 35 — General Settings
+
+Implement:
+- Theme.
+- Language.
+- Time zone.
+- Date format.
+- Display density.
+
+## Screen 36 — Mail Settings
+
+Implement:
+- Default reply behaviour.
+- Conversation threading.
+- Reading pane preferences.
+- Default font.
+- Send confirmation preference where appropriate.
+
+## Screen 37 — Email Signature
+
+Allow:
+- Create signature.
+- Edit signature.
+- Set default signature.
+- Preview signature.
+- Save.
+
+## Screen 38 — Notification Settings
+
+Allow users to control their notification preferences.
+
+---
+
+# 12. ADMIN CONSOLE — COMPLETE IMPLEMENTATION
+
+The Admin Console must be a separate, fully functional management environment.
+
+Use an independent admin sidebar and clear admin identity.
+
+Admin sidebar:
+
+- Overview.
+- Domains.
+- Mailboxes.
+- Users.
+- Roles & Permissions.
+- Security.
+- Deliverability.
+- Usage & Storage.
+- Organisation.
+- Notifications.
+- Billing (V1).
+- Audit Logs (V2).
+
+Provide a visible navigation option back to Mail Workspace.
+
+## Screen 39 — Admin Overview
+
+KPI cards:
+- Total Mailboxes.
+- Active Mailboxes.
+- Connected Domains.
+- Total Storage.
+- Domain Health.
+- Security Alerts.
+
+Show:
+- Mailbox growth chart.
+- Storage usage.
+- Domain health.
+- Recent administrative activity.
+- Security events.
+- Quick actions.
+
+## Screen 40 — Domain Management
+
+Table:
+- Domain.
+- Verification.
+- MX.
+- SPF.
+- DKIM.
+- DMARC.
+- Mailbox count.
+- Status.
+- Actions.
+
+Actions:
+- Add domain.
+- View.
+- Edit configuration.
+- Verify.
+- Recheck DNS.
+- Remove domain.
+
+## Screen 41 — Add Domain
+
+Create a multi-step wizard.
+
+Steps:
+1. Domain entry.
+2. Ownership verification.
+3. DNS configuration.
+4. Verification review.
+5. Completion.
+
+## Screen 42 — Domain Details
+
+Tabs:
+- Overview.
+- DNS Records.
+- Mailboxes.
+- Security.
+- Activity.
+
+Show:
+- Domain health.
+- DNS verification.
+- Last check.
+- Mailbox count.
+- Configuration errors.
+
+## Screen 43 — Mailbox Management
+
+Table:
+- Name.
+- Email.
+- Domain.
+- Role.
+- Status.
+- Storage used.
+- Quota.
+- Created date.
+- Actions.
+
+Actions:
+- Create mailbox.
+- Edit.
+- Suspend.
+- Reactivate.
+- Reset password.
+- Change quota.
+- Delete.
+
+Include search, filters and pagination.
+
+## Screen 44 — Create Mailbox
+
+Fields:
+- Name.
+- Username.
+- Domain.
+- Password or invitation.
+- Role.
+- Quota.
+- Status.
+
+Automatically construct the email address.
+
+## Screen 45 — Mailbox Details
+
+Show:
+- Personal information.
+- Email address.
+- Status.
+- Role.
+- Domain.
+- Storage.
+- Creation date.
+- Last activity.
+
+Actions:
+- Edit.
+- Suspend.
+- Reset password.
+- Adjust quota.
+- Delete.
+
+## Screen 46 — User Management
+
+Show organisation users, not just mailboxes.
+
+Fields:
+- Name.
+- Email.
+- Role.
+- Department.
+- Account status.
+- Last login.
+- Created date.
+
+Actions:
+- Invite.
+- Edit.
+- Change role.
+- Suspend.
+- Reactivate.
+
+## Screen 47 — User Details
+
+Show:
+- Profile.
+- Account permissions.
+- Mailbox association.
+- Activity.
+- Security status.
+
+## Screen 48 — Roles and Permissions
+
+Create a role management screen.
+
+Default roles:
+- Owner.
+- Admin.
+- Mailbox User.
+
+Create a permission matrix.
+
+Example permissions:
+- Manage domains.
+- Create mailboxes.
+- Delete mailboxes.
+- Manage users.
+- Change quotas.
+- View organisation usage.
+- Manage security.
+- View audit logs.
+
+Only allow permissions that the acting user is authorised to grant.
+
+## Screen 49 — Security Dashboard
+
+Display:
+- Security status.
+- Failed login attempts.
+- Suspicious activity.
+- Blocked spam.
+- Malware alerts.
+- Account security.
+
+Show recent security events.
+
+## Screen 50 — Security Settings
+
+Implement or clearly stage:
+
+- Password policies.
+- Login rate limiting.
+- Session controls.
+- Brute-force protection.
+- 2FA enforcement (V1).
+- IP allowlisting (V1).
+
+Never claim security controls are enforced unless the backend actually enforces them.
+
+## Screen 51 — Email Deliverability Dashboard
+
+Show:
+- Outbound volume.
+- Delivered emails.
+- Bounced emails.
+- Deferred emails.
+- Queue size.
+- Spam complaints.
+- Delivery trends.
+
+Domain authentication:
+- SPF.
+- DKIM.
+- DMARC.
+- PTR.
+- TLS.
+
+Show a clear distinction between configuration status and delivery metrics.
+
+## Screen 52 — Delivery Queue
+
+Show:
+- Message reference.
+- Sender domain.
+- Recipient domain.
+- Status.
+- Timestamp.
+- Retry status.
+- Failure reason.
+
+Do not expose full message bodies in operational tables.
+
+## Screen 53 — Usage and Storage
+
+Show:
+- Organisation storage allocation.
+- Used storage.
+- Available storage.
+- Mailbox-level breakdown.
+- Storage trends.
+
+Allow administrators to change quotas within authorised limits.
+
+## Screen 54 — Organisation Profile
+
+This is a critical page.
+
+Fields:
+- Organisation name.
+- Legal/business name.
+- Company logo.
+- Business category.
+- Country.
+- Primary domain.
+- Website.
+- Business contact email.
+- Contact phone.
+- Address.
+- Time zone.
+
+Actions:
+- Edit organisation.
+- Upload logo.
+- Save changes.
+
+Restrict sensitive legal changes to the organisation owner.
+
+## Screen 55 — Organisation Preferences
+
+Configure:
+- Default language.
+- Default time zone.
+- Date format.
+- Default mailbox quota.
+- Default user role.
+- Organisation notification preferences.
+
+## Screen 56 — Organisation Security
+
+Show:
+- Organisation password policy.
+- Session policies.
+- 2FA policy.
+- Login protection.
+- Security alerts.
+
+## Screen 57 — Organisation Notifications
+
+Allow administrators to configure:
+- Domain verification alerts.
+- Storage quota warnings.
+- Security alerts.
+- Mail delivery alerts.
+- System notifications.
+
+## Screen 58 — Admin Activity
+
+Show:
+- Administrator.
+- Action.
+- Resource.
+- Timestamp.
+- Status.
+
+Clearly distinguish operational activity from formal compliance audit logs.
+
+## Screen 59 — Admin Billing (V1)
+
+Show:
+- Current plan.
+- Mailbox seats.
+- Usage.
+- Subscription status.
+- Invoice history.
+- Payment details.
+
+Use illustrative values and clearly label billing as unavailable until payment integration is configured.
+
+## Screen 60 — Subscription Management (V1)
+
+Show:
+- Current subscription.
+- Available plans.
+- Seat count.
+- Renewal date.
+- Payment method.
+- Upgrade/downgrade options.
+
+Do not simulate real payments.
+
+---
+
+# 13. PLATFORM SUPER ADMIN CONSOLE
+
+Build a separate platform-level administrative experience for Corivo's internal team.
+
+This is not the same as the customer organisation admin console.
+
+## Screen 61 — Platform Overview
+
+Display:
+- Total organisations.
+- Active organisations.
+- Suspended organisations.
+- Total mailboxes.
+- Total domains.
+- Platform health.
+- Infrastructure alerts.
+
+## Screen 62 — Organisation Directory
+
+Table:
+- Organisation.
+- Primary domain.
+- Owner.
+- Mailboxes.
+- Status.
+- Created date.
+- Actions.
+
+Actions:
+- View organisation.
+- Suspend.
+- Reactivate.
+
+## Screen 63 — Organisation Details
+
+Display:
+- Organisation information.
+- Domains.
+- Mailbox count.
+- Subscription status.
+- Account health.
+- Recent administrative events.
+
+## Screen 64 — Platform User Management
+
+Display platform operators and their permissions.
+
+Support:
+- Create operator.
+- Change permissions.
+- Suspend operator.
+- Review activity.
+
+## Screen 65 — Platform Health
+
+Display integration status for:
+- API.
+- PostgreSQL.
+- Redis.
+- SMTP.
+- IMAP.
+- Search.
+- Object storage.
+- DNS checker.
+- Background workers.
+
+Only show actual service health when connected to real health checks.
+
+## Screen 66 — Platform Settings
+
+Configure:
+- Platform branding.
+- Default quotas.
+- Supported domain policies.
+- Mailbox defaults.
+- Security configuration.
+- Maintenance notices.
+
+## Screen 67 — Platform Audit Logs
+
+Record sensitive administrative actions.
+
+Include:
+- Actor.
+- Action.
+- Resource.
+- Timestamp.
+- IP address.
+- Result.
+
+Make audit records append-only through the backend design.
+
+---
+
+# 14. V1 FUTURE MODULES
+
+Build the following as functional modules where practical, with clear feature availability indicators.
+
+## Screen 68 — Contacts
+
+Features:
+- Contact list.
+- Contact details.
+- Add contact.
+- Edit contact.
+- Delete contact.
+- Search.
+- Contact groups.
+- CSV import/export.
+- vCard import/export.
+
+## Screen 69 — Calendar
+
+Features:
+- Monthly view.
+- Weekly view.
+- Daily view.
+- Create event.
+- Edit event.
+- Attendees.
+- Invitations.
+- Reminders.
+- Event details.
+
+Do not claim CalDAV synchronisation unless connected.
+
+## Screen 70 — Groups and Aliases
+
+Features:
+- Create aliases.
+- Manage forwarding.
+- Distribution groups.
+- Group members.
+- Edit group.
+- Delete group.
+
+## Screen 71 — Migration Centre
+
+Sources:
+- Gmail.
+- Zoho Mail.
+- Outlook.
+- IMAP.
+
+Features:
+- Source connection.
+- Mailbox mapping.
+- Migration progress.
+- Success count.
+- Failed items.
+- Error details.
+- Retry.
+
+Actual migration must be implemented through a backend worker and provider connections.
+
+## Screen 72 — Billing
+
+Features:
+- Plans.
+- Seat management.
+- Subscription.
+- Invoices.
+- GST details.
+- Payment history.
+- Razorpay integration interface.
+
+Use sandbox mode until payment credentials and webhook verification are configured.
+
+---
+
+# 15. V2 FUTURE MODULES
+
+## Screen 73 — Mobile App Preview
+
+Create responsive mobile experiences for:
+- Inbox.
+- Reading email.
+- Compose.
+- Search.
+- Profile.
+- Settings.
+
+## Screen 74 — Shared Mailboxes
+
+Features:
+- Shared mailbox list.
+- Access permissions.
+- Team members.
+- Shared message activity.
+
+## Screen 75 — Tasks
+
+Features:
+- Create task.
+- Assign user.
+- Due date.
+- Priority.
+- Status.
+- Task list.
+
+## Screen 76 — Notes
+
+Features:
+- Create note.
+- Edit.
+- Delete.
+- Search.
+- Organise notes.
+
+## Screen 77 — Integrations
+
+Show future integration marketplace.
+
+Include:
+- Public API.
+- Webhooks.
+- Third-party integrations.
+- API key management interface.
+
+Do not expose or create unrestricted API keys.
+
+---
+
+# 16. DATABASE DESIGN
+
+Use PostgreSQL with Prisma.
+
+Create appropriate models and relationships.
+
+Required models:
+
+1. Organisation
+2. User
+3. OrganisationMembership
+4. Role
+5. Permission
+6. Domain
+7. DNSRecord
+8. Mailbox
+9. MailboxQuota
+10. Alias
+11. DistributionGroup
+12. GroupMember
+13. MailFolder
+14. EmailMessageMetadata
+15. EmailThread
+16. Attachment
+17. Draft
+18. Contact
+19. ContactGroup
+20. Calendar
+21. CalendarEvent
+22. UserPreference
+23. UserNotification
+24. NotificationPreference
+25. Session
+26. PasswordResetToken
+27. SecurityEvent
+28. AuditLog
+29. Subscription
+30. Invoice
+31. Payment
+32. MigrationJob
+33. DeliveryEvent
+34. OrganisationSetting
+35. PlatformSetting
+36. PlatformOperator
+
+## Important database rules
+
+- Use UUID primary keys.
+- Use createdAt and updatedAt timestamps.
+- Add relevant indexes.
+- Use foreign keys.
+- Use database transactions for multi-step operations.
+- Enforce tenant isolation.
+- Add appropriate unique constraints.
+- Do not store raw passwords.
+- Do not store plaintext DKIM private keys.
+- Encrypt sensitive credentials using a managed key-management approach.
+
+Use organisation_id consistently where relevant.
+
+A user must only access resources belonging to organisations in which they have authorised membership.
+
+## Email storage distinction
+
+Do not store raw email bodies and attachments as ordinary application database records without an explicit architecture decision.
+
+The metadata database and the actual mail storage system are separate.
+
+Use the mail server or an explicitly defined development adapter for message storage and retrieval.
+
+---
+
+# 17. EMAIL INFRASTRUCTURE INTEGRATION
+
+This is a business email product, not simply a CRUD application.
+
+Create modular integration interfaces.
+
+## SMTP — Postfix
+
+Responsible for:
+- Outbound mail.
+- Inbound mail routing.
+- SMTP authentication integration.
+- Delivery status.
+- Bounce handling.
+
+## IMAP — Dovecot
+
+Responsible for:
+- Mailbox access.
+- Folder synchronisation.
+- Message retrieval.
+- Mailbox storage.
+
+## Spam Filtering — Rspamd
+
+Responsible for:
+- Spam scoring.
+- DKIM signing integration.
+- DMARC-related processing.
+- Rate limiting integration.
+
+## Antivirus — ClamAV
+
+Responsible for:
+- Attachment scanning.
+- Malware detection.
+- Quarantine integration.
+
+## Search
+
+Use OpenSearch or Meilisearch through a search adapter.
+
+## Integration architecture
+
+Create typed service interfaces such as:
+
+- MailTransportProvider.
+- MailboxProvider.
+- DNSVerificationProvider.
+- SpamProtectionProvider.
+- AttachmentStorageProvider.
+- EmailSearchProvider.
+- PaymentProvider.
+
+Implement:
+
+1. Development adapter.
+2. Production adapter interface.
+3. Configuration validation.
+4. Health checks.
+5. Structured error handling.
+6. Logging.
+7. Retry mechanisms where appropriate.
+
+Never claim that a production adapter is operational without the actual service connection.
+
+## Sending email workflow
+
+1. User composes an email.
+2. Validate recipients and content.
+3. Upload attachments securely.
+4. Save draft if requested.
+5. Submit message to the mail service.
+6. Receive an actual acceptance result.
+7. Update message status.
+8. Track delivery, bounce or failure events.
+
+Distinguish:
+- Draft.
+- Queued.
+- Accepted.
+- Sent to receiving server.
+- Delivered, only if supported by trustworthy delivery evidence.
+- Deferred.
+- Bounced.
+- Failed.
+
+Do not label SMTP acceptance as guaranteed inbox delivery.
+
+---
+
+# 18. SECURITY AND COMPLIANCE
+
+Implement security as a foundational requirement.
+
+## Authentication security
+
+- Argon2id password hashing.
+- Secure session cookies.
+- CSRF protection where applicable.
+- Rate limiting.
+- Password reset token expiration.
+- Login attempt controls.
+- Secure logout.
+- Session revocation.
+
+## Authorisation
+
+- Server-side role checks.
+- Organisation-level permissions.
+- Resource-level checks.
+- No cross-tenant data access.
+- Platform admin separation.
+
+## Application security
+
+- Zod validation.
+- Safe database queries.
+- XSS protection.
+- Content Security Policy.
+- Secure file uploads.
+- MIME validation.
+- File size limits.
+- Private attachment access.
+- No secrets in frontend bundles.
+- No sensitive data in logs.
+
+## Mail security
+
+- TLS support.
+- SPF.
+- DKIM.
+- DMARC.
+- PTR.
+- MTA-STS.
+- Spam filtering.
+- Antivirus.
+- Rate limits.
+- Brute-force protection.
+- Account abuse detection.
+
+## Privacy and compliance
+
+Prepare an architecture that supports:
+- Privacy Policy.
+- Terms of Service.
+- Acceptable Use Policy.
+- Data Processing Agreement.
+- Data retention configuration.
+- Account deletion workflow.
+- Data export workflow.
+- Incident response.
+
+Consider India's Digital Personal Data Protection Act, 2023, and obtain appropriate legal review before claiming compliance.
+
+Never display sensitive customer email content to platform operators by default.
+
+---
+
+# 19. NOTIFICATIONS AND GLOBAL FEEDBACK
+
+Create a reusable notification system.
+
+Support:
+- Success toasts.
+- Error toasts.
+- Warning messages.
+- Informational messages.
+- Confirmation dialogs.
+- In-app notifications.
+
+Examples:
+
+"Domain verification completed."
+
+"Mailbox created successfully."
+
+"Your storage usage has reached 80%."
+
+"DNS configuration needs attention."
+
+"Password updated successfully."
+
+"Unable to connect to the mail service. Please try again."
+
+Use actual operation results to determine notification messages.
+
+---
+
+# 20. RESPONSIVE DESIGN
+
+Support:
+
+Desktop:
+1440px reference.
+
+Tablet:
+768px reference.
+
+Mobile:
+390px reference.
+
+Desktop:
+- Full sidebar.
+- Spacious workspace.
+- Three-column mail layout.
+- Admin data tables.
+
+Tablet:
+- Collapsible navigation.
+- Responsive tables.
+- Flexible content.
+
+Mobile:
+- Compact navigation.
+- Single-column email experience.
+- Touch-friendly buttons.
+- Responsive compose.
+- Bottom navigation where appropriate.
+- No horizontal overflow.
+
+Do not merely scale desktop designs down. Adapt layouts to the device.
+
+---
+
+# 21. ERROR, EMPTY AND LOADING STATES
+
+Every major page must support:
+
+- Loading state.
+- Skeleton state.
+- Empty state.
+- Error state.
+- Success state.
+- Permission denied.
+- Session expired.
+- Offline or unavailable integration.
+
+Examples:
+
+Empty inbox:
+"You don't have any emails yet."
+
+No domains:
+"Connect your business domain to start creating professional email accounts."
+
+No mailboxes:
+"Create your first mailbox."
+
+DNS error:
+"We couldn't verify this record. Check the host and value, then try again."
+
+Service unavailable:
+"The mail service is currently unavailable. Your draft has been preserved."
+
+Always preserve unsent message content where reasonably possible.
+
+---
+
+# 22. SEED DATA AND DEVELOPMENT MODE
+
+Create realistic development seed data.
+
+Example organisation:
+
+Organisation:
+Corivo Technologies
+
+Primary domain:
+corivotech.example
+
+Users:
+- Razeen — Organisation Owner.
+- Admin User — Organisation Admin.
+- Employee One — Mailbox User.
+- Employee Two — Mailbox User.
+
+Use reserved example domains such as example.com or example.org for email demonstrations. Do not send real emails to these addresses.
+
+Seed:
+- Several mailboxes.
+- Example domains.
+- DNS record examples.
+- 15 sample emails.
+- Custom folders.
+- Security events.
+- Usage metrics.
+- Administrative activities.
+- Sample notifications.
+
+Development mode must be visibly distinguishable from production mode.
+
+Create a demo login experience for local development without hardcoding production credentials.
+
+Do not use real customer data.
+
+---
+
+# 23. PROJECT STRUCTURE
+
+Use a maintainable structure similar to:
+
+corivo-mail/
+|
+├── app/
+│   ├── (public)/
+│   ├── (auth)/
+│   ├── onboarding/
+│   ├── app/
+│   │   ├── mail/
+│   │   ├── account/
+│   │   ├── settings/
+│   │   ├── contacts/
+│   │   └── calendar/
+│   ├── admin/
+│   ├── platform/
+│   └── api/
+|
+├── components/
+│   ├── ui/
+│   ├── layout/
+│   ├── mail/
+│   ├── admin/
+│   ├── forms/
+│   ├── tables/
+│   └── shared/
+|
+├── lib/
+│   ├── auth/
+│   ├── db/
+│   ├── validation/
+│   ├── permissions/
+│   ├── security/
+│   ├── email/
+│   ├── dns/
+│   └── utils/
+|
+├── services/
+│   ├── auth/
+│   ├── organisation/
+│   ├── domain/
+│   ├── mailbox/
+│   ├── mail/
+│   ├── user/
+│   ├── security/
+│   ├── billing/
+│   └── notification/
+|
+├── providers/
+│   ├── mail/
+│   ├── dns/
+│   ├── storage/
+│   ├── spam/
+│   ├── search/
+│   └── payment/
+|
+├── prisma/
+│   ├── schema.prisma
+│   ├── migrations/
+│   └── seed.ts
+|
+├── hooks/
+├── types/
+├── config/
+├── public/
+├── tests/
+├── docs/
+├── .env.example
+└── README.md
+
+Adjust the structure where needed, but preserve modularity and separation of responsibilities.
+
+---
+
+# 24. API REQUIREMENTS
+
+Create typed APIs for the following areas.
+
+Authentication:
+- POST /api/auth/register
+- POST /api/auth/login
+- POST /api/auth/logout
+- POST /api/auth/forgot-password
+- POST /api/auth/reset-password
+- GET /api/auth/session
+
+Organisation:
+- GET /api/organisations/current
+- PATCH /api/organisations/current
+- GET /api/organisations/members
+
+Domains:
+- GET /api/domains
+- POST /api/domains
+- GET /api/domains/:id
+- PATCH /api/domains/:id
+- DELETE /api/domains/:id
+- POST /api/domains/:id/verify
+- GET /api/domains/:id/dns
+- POST /api/domains/:id/dns/check
+
+Mailboxes:
+- GET /api/mailboxes
+- POST /api/mailboxes
+- GET /api/mailboxes/:id
+- PATCH /api/mailboxes/:id
+- DELETE /api/mailboxes/:id
+- POST /api/mailboxes/:id/suspend
+- POST /api/mailboxes/:id/reactivate
+
+Mail:
+- GET /api/mail
+- GET /api/mail/:id
+- POST /api/mail/send
+- POST /api/mail/drafts
+- PATCH /api/mail/drafts/:id
+- DELETE /api/mail/drafts/:id
+- POST /api/mail/:id/archive
+- POST /api/mail/:id/star
+- POST /api/mail/:id/move
+- POST /api/mail/:id/read
+- POST /api/mail/:id/reply
+- POST /api/mail/:id/forward
+
+Profile and settings:
+- GET /api/users/me
+- PATCH /api/users/me
+- PATCH /api/users/me/password
+- GET /api/users/me/sessions
+- DELETE /api/users/me/sessions/:id
+- GET /api/users/me/preferences
+- PATCH /api/users/me/preferences
+
+Administration:
+- GET /api/admin/overview
+- GET /api/admin/users
+- GET /api/admin/security
+- GET /api/admin/deliverability
+- GET /api/admin/usage
+- GET /api/admin/audit-logs
+
+Implement appropriate APIs for additional modules.
+
+Requirements:
+- Typed request and response contracts.
+- Server-side validation.
+- Correct HTTP status codes.
+- Authentication.
+- Authorisation.
+- Tenant isolation.
+- Pagination.
+- Filtering.
+- Consistent error responses.
+
+Do not expose internal errors or stack traces to end users.
+
+---
+
+# 25. TESTING REQUIREMENTS
+
+Create tests for critical functionality.
+
+Authentication:
+- Valid login.
+- Invalid password.
+- Suspended account.
+- Expired session.
+- Password reset.
+
+Permissions:
+- Owner permissions.
+- Admin permissions.
+- Employee permissions.
+- Cross-tenant access prevention.
+
+Domains:
+- Invalid domain.
+- Duplicate domain.
+- Verification pending.
+- Verification failure.
+- Successful verification through a configured provider.
+
+Mail:
+- Create draft.
+- Update draft.
+- Send request.
+- Invalid recipient.
+- Attachment validation.
+- Failed mail provider.
+- Correct message status.
+
+Admin:
+- Create mailbox.
+- Update quota.
+- Suspend mailbox.
+- Reactivate mailbox.
+- Update organisation settings.
+
+Frontend:
+- Form validation.
+- Navigation.
+- Responsive layout.
+- Loading states.
+- Error states.
+- Empty states.
+
+Use automated tests where appropriate and manually verify major flows.
+
+---
+
+# 26. DEVELOPMENT EXECUTION PLAN
+
+Do not attempt to build everything in one unverified code dump.
+
+Work in structured implementation phases.
+
+## Phase 1 — Foundation
+
+Build:
+- Next.js project foundation.
+- TypeScript configuration.
+- Design system.
+- Navigation.
+- Shared components.
+- Database schema.
+- Prisma setup.
+- Environment configuration.
+
+## Phase 2 — Authentication and tenancy
+
+Build:
+- Registration.
+- Login.
+- Sessions.
+- Password reset.
+- User roles.
+- Organisation membership.
+- Route protection.
+- Tenant isolation.
+
+## Phase 3 — Onboarding and domains
+
+Build:
+- Organisation creation.
+- Domain addition.
+- Ownership verification.
+- DNS records.
+- DNS status dashboard.
+- Mailbox creation.
+
+## Phase 4 — User Workspace
+
+Build:
+- Inbox.
+- Email reading.
+- Compose.
+- Drafts.
+- Sent.
+- Folders.
+- Spam.
+- Trash.
+- Search.
+
+## Phase 5 — User Account and Settings
+
+Build:
+- Profile overview.
+- Personal information.
+- Account security.
+- Password management.
+- Sessions.
+- Preferences.
+- Notifications.
+- Storage.
+- Email signature.
+
+## Phase 6 — Admin Console
+
+Build:
+- Overview.
+- Domain management.
+- Mailbox management.
+- User management.
+- Roles and permissions.
+- Security.
+- Deliverability.
+- Usage and storage.
+- Organisation profile.
+- Organisation settings.
+- Notifications.
+
+## Phase 7 — Platform Administration
+
+Build:
+- Organisation directory.
+- Platform user management.
+- Platform health.
+- Platform settings.
+- Audit logs.
+
+## Phase 8 — V1 Modules
+
+Build:
+- Contacts.
+- Calendar.
+- Aliases.
+- Groups.
+- Billing.
+- Migration.
+
+## Phase 9 — V2 Modules
+
+Build:
+- Shared mailboxes.
+- Mobile-ready workspace.
+- Tasks.
+- Notes.
+- Integrations.
+
+## Phase 10 — Quality and production readiness
+
+Verify:
+- Build passes.
+- TypeScript passes.
+- Database migrations work.
+- API validation works.
+- Role permissions work.
+- Tenant isolation works.
+- Critical tests pass.
+- Responsive layouts work.
+- No broken navigation.
+- No dead buttons.
+- No exposed secrets.
+
+Maintain a development checklist and report completed, incomplete and blocked modules honestly.
+
+---
+
+# 27. DEFINITION OF DONE
+
+The project is not considered complete just because the dashboard looks good.
+
+A module is complete only when:
+
+1. Its page is implemented.
+2. Navigation works.
+3. UI components are responsive.
+4. Forms are validated.
+5. User actions work.
+6. Data is persisted where required.
+7. Backend permissions are enforced.
+8. Errors are handled.
+9. Loading and empty states exist.
+10. Relevant tests pass.
+
+A real email-sending feature is complete only when it is connected to an operational mail transport and the result is handled correctly.
+
+A real DNS verification feature is complete only when it checks actual DNS records.
+
+A real payment feature is complete only when it is connected to a payment provider and verifies payment results securely.
+
+---
+
+# 28. FINAL INSTRUCTION
+
+Start by inspecting the existing project and its dependencies.
+
+If no project exists, initialise the application using Next.js and TypeScript.
+
+Then build the product incrementally using the phases above.
+
+Prioritise:
+
+1. Architecture and security.
+2. Authentication and organisation isolation.
+3. User email workspace.
+4. Complete user profile and settings.
+5. Complete organisation admin console.
+6. Domain and DNS management.
+7. Mail infrastructure integration.
+8. Platform administration.
+9. Future modules.
+
+Do not omit any of the profile, account, personal settings, organisation settings, admin or platform administration screens specified above.
+
+The application must have a consistent professional design throughout.
+
+Do not generate only a homepage and dashboard.
+
+Do not stop after the first few screens.
+
+Keep implementing the next incomplete module, verifying each phase before proceeding.
+
+At the end of every phase, report:
+- What was implemented.
+- Files created or updated.
+- Features that work.
+- Features using development simulation.
+- External integrations still required.
+- Outstanding bugs.
+- Next implementation phase.
+
+**Final product identity:**
+
+CORIVO MAIL
+
+Professional Business Email, Simplified.
+
+Built by CORIVO TECH.

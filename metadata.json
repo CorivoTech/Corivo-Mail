@@ -1,0 +1,6 @@
+{
+  "name": "Corivo Mail",
+  "description": "Professional Business Email, Simplified. Enterprise domain-based email, webmail workspace, DNS verification, and multi-tenant organisation management by Corivo Tech.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

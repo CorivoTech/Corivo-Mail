@@ -1,0 +1,601 @@
+// Corivo Mail — Reference PostgreSQL Prisma Schema
+// Production target schema covering multi-tenant organisations, RBAC, domains, DNS,
+// mailboxes, mail metadata separation, contacts, calendar, audit logs, and billing.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organisation {
+  id                  String   @id @default(uuid()) @db.Uuid
+  name                String
+  legalName           String?
+  slug                String   @unique
+  logoUrl             String?
+  businessCategory    String
+  country             String   @default("India")
+  size                String?
+  primaryDomain       String?
+  website             String?
+  contactEmail        String
+  contactPhone        String?
+  address             String?
+  timezone            String   @default("Asia/Kolkata")
+  status              String   @default("ACTIVE") // ACTIVE | SUSPENDED
+  storageQuotaMb      Int      @default(51200)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  memberships         OrganisationMembership[]
+  domains             Domain[]
+  mailboxes           Mailbox[]
+  aliases             Alias[]
+  distributionGroups  DistributionGroup[]
+  securityEvents      SecurityEvent[]
+  auditLogs           AuditLog[]
+  subscriptions       Subscription[]
+  invoices            Invoice[]
+  payments            Payment[]
+  migrationJobs       MigrationJob[]
+  deliveryEvents      DeliveryEvent[]
+  settings            OrganisationSetting?
+}
+
+model User {
+  id                  String   @id @default(uuid()) @db.Uuid
+  email               String   @unique
+  passwordHash        String
+  firstName           String
+  lastName            String
+  displayName         String
+  jobTitle            String?
+  department          String?
+  phone               String?
+  avatarUrl           String?
+  status              String   @default("ACTIVE") // ACTIVE | SUSPENDED
+  isPlatformAdmin     Boolean  @default(false)
+  lastLoginAt         DateTime?
+  passwordUpdatedAt   DateTime @default(now())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  memberships         OrganisationMembership[]
+  mailboxes           Mailbox[]
+  preferences         UserPreference?
+  notifications       UserNotification[]
+  notificationPrefs   NotificationPreference?
+  sessions            Session[]
+  resetTokens         PasswordResetToken[]
+  contacts            Contact[]
+  contactGroups       ContactGroup[]
+  calendars           Calendar[]
+  platformOperator    PlatformOperator?
+}
+
+model Role {
+  id          String   @id @default(uuid()) @db.Uuid
+  key         String   @unique // OWNER | ADMIN | MAILBOX_USER | PLATFORM_SUPER_ADMIN
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  permissions Permission[]
+  memberships OrganisationMembership[]
+}
+
+model Permission {
+  id          String   @id @default(uuid()) @db.Uuid
+  roleId      String   @db.Uuid
+  key         String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, key])
+}
+
+model OrganisationMembership {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String   @db.Uuid
+  userId         String   @db.Uuid
+  roleId         String   @db.Uuid
+  status         String   @default("ACTIVE")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           Role         @relation(fields: [roleId], references: [id])
+
+  @@unique([organisationId, userId])
+  @@index([organisationId])
+}
+
+model Domain {
+  id                 String   @id @default(uuid()) @db.Uuid
+  organisationId     String   @db.Uuid
+  domainName         String   @unique
+  isPrimary          Boolean  @default(false)
+  ownershipStatus    String   @default("PENDING") // PENDING | CHECKING | VERIFIED | FAILED
+  verificationToken  String
+  mxStatus           String   @default("PENDING")
+  spfStatus          String   @default("PENDING")
+  dkimStatus         String   @default("PENDING")
+  dmarcStatus        String   @default("PENDING")
+  tlsStatus          String   @default("UNKNOWN")
+  dkimPublicKey      String?
+  dkimKeyRef         String?  // Encrypted KMS key reference, never plaintext private key
+  lastCheckedAt      DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  organisation       Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  dnsRecords         DNSRecord[]
+  mailboxes          Mailbox[]
+
+  @@index([organisationId])
+}
+
+model DNSRecord {
+  id            String   @id @default(uuid()) @db.Uuid
+  domainId      String   @db.Uuid
+  category      String   // OWNERSHIP | MX | SPF | DKIM | DMARC
+  type          String   // TXT | MX | CNAME
+  host          String
+  value         String
+  priority      Int?
+  ttl           Int      @default(3600)
+  status        String   @default("PENDING") // PENDING | VERIFIED | FAILED
+  lastCheckedAt DateTime?
+  errorMessage  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  domain        Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@index([domainId])
+}
+
+model Mailbox {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String   @db.Uuid
+  domainId       String   @db.Uuid
+  userId         String   @db.Uuid
+  username       String
+  emailAddress   String   @unique
+  displayName    String
+  status         String   @default("ACTIVE") // ACTIVE | SUSPENDED
+  lastActivityAt DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  domain         Domain       @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quota          MailboxQuota?
+  folders        MailFolder[]
+  messages       EmailMessageMetadata[]
+  drafts         Draft[]
+
+  @@index([organisationId])
+}
+
+model MailboxQuota {
+  id         String   @id @default(uuid()) @db.Uuid
+  mailboxId  String   @unique @db.Uuid
+  quotaMb    Int      @default(10240)
+  usedMb     Float    @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  mailbox    Mailbox  @relation(fields: [mailboxId], references: [id], onDelete: Cascade)
+}
+
+model Alias {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String   @db.Uuid
+  aliasAddress   String   @unique
+  targetAddress  String
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+}
+
+model DistributionGroup {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String   @db.Uuid
+  name           String
+  emailAddress   String   @unique
+  description    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation  @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  members        GroupMember[]
+}
+
+model GroupMember {
+  id        String   @id @default(uuid()) @db.Uuid
+  groupId   String   @db.Uuid
+  email     String
+  role      String   @default("MEMBER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  group     DistributionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+}
+
+model MailFolder {
+  id         String   @id @default(uuid()) @db.Uuid
+  mailboxId  String   @db.Uuid
+  name       String
+  slug       String
+  isSystem   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  mailbox    Mailbox  @relation(fields: [mailboxId], references: [id], onDelete: Cascade)
+  messages   EmailMessageMetadata[]
+
+  @@unique([mailboxId, slug])
+}
+
+model EmailThread {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String   @db.Uuid
+  subject        String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  messages       EmailMessageMetadata[]
+}
+
+model EmailMessageMetadata {
+  id              String   @id @default(uuid()) @db.Uuid
+  organisationId  String   @db.Uuid
+  mailboxId       String   @db.Uuid
+  folderId        String   @db.Uuid
+  threadId        String   @db.Uuid
+  externalStoreId String   // Reference to mail server / object store body
+  fromName        String
+  fromAddress     String
+  toAddresses     String[]
+  ccAddresses     String[]
+  bccAddresses    String[]
+  subject         String
+  snippet         String
+  isRead          Boolean  @default(false)
+  isStarred       Boolean  @default(false)
+  snoozedUntil    DateTime?
+  deliveryStatus  String   @default("RECEIVED")
+  sizeBytes       Int      @default(0)
+  sentAt          DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  mailbox         Mailbox     @relation(fields: [mailboxId], references: [id], onDelete: Cascade)
+  folder          MailFolder  @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  thread          EmailThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  attachments     Attachment[]
+
+  @@index([organisationId, mailboxId])
+}
+
+model Attachment {
+  id          String   @id @default(uuid()) @db.Uuid
+  messageId   String   @db.Uuid
+  fileName    String
+  mimeType    String
+  sizeBytes   Int
+  storageKey  String
+  scanStatus  String   @default("CLEAN") // PENDING | CLEAN | QUARANTINED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  message     EmailMessageMetadata @relation(fields: [messageId], references: [id], onDelete: Cascade)
+}
+
+model Draft {
+  id           String   @id @default(uuid()) @db.Uuid
+  mailboxId    String   @db.Uuid
+  toAddresses  String[]
+  ccAddresses  String[]
+  bccAddresses String[]
+  subject      String
+  bodyHtml     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  mailbox      Mailbox  @relation(fields: [mailboxId], references: [id], onDelete: Cascade)
+}
+
+model Contact {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @db.Uuid
+  organisationId String   @db.Uuid
+  groupId        String?  @db.Uuid
+  fullName       String
+  email          String
+  phone          String?
+  company        String?
+  jobTitle       String?
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group          ContactGroup? @relation(fields: [groupId], references: [id])
+}
+
+model ContactGroup {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contacts  Contact[]
+}
+
+model Calendar {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  name      String
+  timezone  String   @default("Asia/Kolkata")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events    CalendarEvent[]
+}
+
+model CalendarEvent {
+  id          String   @id @default(uuid()) @db.Uuid
+  calendarId  String   @db.Uuid
+  title       String
+  description String?
+  location    String?
+  startAt     DateTime
+  endAt       DateTime
+  attendees   String[]
+  reminderMin Int      @default(15)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  calendar    Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+}
+
+model UserPreference {
+  id                 String   @id @default(uuid()) @db.Uuid
+  userId             String   @unique @db.Uuid
+  language           String   @default("en-IN")
+  timezone           String   @default("Asia/Kolkata")
+  dateFormat         String   @default("DD/MM/YYYY")
+  timeFormat         String   @default("12h")
+  theme              String   @default("light")
+  density            String   @default("comfortable")
+  defaultReplyMode   String   @default("reply")
+  threadingEnabled   Boolean  @default(true)
+  readingPane        String   @default("right")
+  defaultFont        String   @default("DM Sans")
+  confirmBeforeSend  Boolean  @default(false)
+  signatureHtml      String   @default("")
+  signatureEnabled   Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserNotification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  title     String
+  message   String
+  severity  String   @default("INFO")
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model NotificationPreference {
+  id                   String   @id @default(uuid()) @db.Uuid
+  userId               String   @unique @db.Uuid
+  newEmailAlerts       Boolean  @default(true)
+  browserNotifications Boolean  @default(false)
+  securityAlerts       Boolean  @default(true)
+  productAnnouncements Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @db.Uuid
+  tokenHash    String   @unique
+  device       String
+  browser      String
+  ipAddress    String
+  location     String?
+  lastActiveAt DateTime @default(now())
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SecurityEvent {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String?  @db.Uuid
+  actorEmail     String?
+  eventType      String
+  severity       String   @default("INFO")
+  ipAddress      String?
+  summary        String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation? @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String?  @db.Uuid
+  actorId        String?  @db.Uuid
+  actorEmail     String
+  action         String
+  resource       String
+  ipAddress      String?
+  result         String   @default("SUCCESS")
+  category       String   @default("ADMIN_ACTIVITY") // ADMIN_ACTIVITY | COMPLIANCE_AUDIT
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation? @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String   @db.Uuid
+  planCode       String   // STARTER | BUSINESS | ENTERPRISE
+  seatCount      Int
+  priceInr       Int
+  status         String   @default("SANDBOX")
+  renewsAt       DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+}
+
+model Invoice {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String   @db.Uuid
+  invoiceNumber  String   @unique
+  amountInr      Int
+  gstInr         Int
+  status         String   @default("ILLUSTRATIVE")
+  issuedAt       DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String   @db.Uuid
+  provider       String   @default("RAZORPAY")
+  providerRef    String?
+  amountInr      Int
+  status         String   @default("SANDBOX")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+}
+
+model MigrationJob {
+  id             String   @id @default(uuid()) @db.Uuid
+  organisationId String   @db.Uuid
+  sourceProvider String   // GMAIL | ZOHO | OUTLOOK | IMAP
+  sourceAccount  String
+  targetMailbox  String
+  status         String   @default("QUEUED")
+  totalItems     Int      @default(0)
+  successCount   Int      @default(0)
+  failedCount    Int      @default(0)
+  errorDetail    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+}
+
+model DeliveryEvent {
+  id              String   @id @default(uuid()) @db.Uuid
+  organisationId  String   @db.Uuid
+  messageRef      String
+  senderDomain    String
+  recipientDomain String
+  status          String   // QUEUED | ACCEPTED | SENT_TO_RECEIVING_SERVER | DELIVERED | DEFERRED | BOUNCED | FAILED
+  retryCount      Int      @default(0)
+  failureReason   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  organisation    Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+}
+
+model OrganisationSetting {
+  id                  String   @id @default(uuid()) @db.Uuid
+  organisationId      String   @unique @db.Uuid
+  defaultLanguage     String   @default("en-IN")
+  defaultTimezone     String   @default("Asia/Kolkata")
+  dateFormat          String   @default("DD/MM/YYYY")
+  defaultQuotaMb      Int      @default(10240)
+  defaultRoleKey      String   @default("MAILBOX_USER")
+  minPasswordLength   Int      @default(10)
+  requireComplexity   Boolean  @default(true)
+  sessionTimeoutHours Int      @default(24)
+  maxLoginAttempts    Int      @default(5)
+  enforce2fa          Boolean  @default(false)
+  notifyDomainAlerts  Boolean  @default(true)
+  notifyQuotaWarnings Boolean  @default(true)
+  notifySecurity      Boolean  @default(true)
+  notifyDelivery      Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  organisation        Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+}
+
+model PlatformSetting {
+  id                String   @id @default(uuid()) @db.Uuid
+  platformName      String   @default("Corivo Mail")
+  defaultQuotaMb    Int      @default(10240)
+  maxAttachmentMb   Int      @default(25)
+  maintenanceNotice String?
+  allowPublicSignup Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model PlatformOperator {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @unique @db.Uuid
+  scope       String   @default("FULL_OPERATOR") // FULL_OPERATOR | HEALTH_READONLY | ORG_SUPPORT
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

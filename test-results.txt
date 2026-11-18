@@ -1,0 +1,30 @@
+TAP version 13
+# C:\\Users\\moham\\Downloads\\corivo-mail\\src\\server\\routes\\auth.ts:46
+#   module.exports = { authRouter };
+#   ^
+# ReferenceError: module is not defined in ES module scope
+#     at <anonymous> (C:\\Users\\moham\\Downloads\\corivo-mail\\src\\server\\routes\\auth.ts:46:3)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+#     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+#     at async <anonymous> (C:\\Users\\moham\\Downloads\\corivo-mail\\tests\\corivo.test.ts:15:24)
+# Node.js v22.14.0
+# Subtest: tests\\corivo.test.ts
+not ok 1 - tests\\corivo.test.ts
+  ---
+  duration_ms: 552.8189
+  location: 'C:\\Users\\moham\\Downloads\\corivo-mail\\tests\\corivo.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 563.4846
