@@ -34,6 +34,15 @@ export default defineConfig(() => {
       },
     },
     server: {
+      port: 5173,
+      // Local development: forward all API calls to the Express backend so the
+      // browser only talks to one origin and cookies/session work correctly.
+      proxy: {
+        '/api': {
+          target: process.env.CORIVO_API_URL || 'http://localhost:3000',
+          changeOrigin: true,
+        },
+      },
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
